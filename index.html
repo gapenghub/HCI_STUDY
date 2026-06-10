@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>HCI Field Manual — CT026-3-2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0d1018;
+    --bg2:#10141f;
+    --panel:#161b29;
+    --panel2:#1b2233;
+    --line:rgba(255,255,255,.08);
+    --line2:rgba(255,255,255,.14);
+    --ink:#eef1f7;
+    --mut:#9aa4bd;
+    --mut2:#6f7a96;
+    --c3:#f7a93c;  /* human factors  */
+    --c5:#27d0e0;  /* task analysis  */
+    --c6:#3ddb8e;  /* usability+uel  */
+    --c7:#a98bff;  /* design princ.  */
+    --c11:#fb7793; /* evaluation     */
+    --disp:"Space Grotesk", "Inter", system-ui, sans-serif;
+    --body:"Inter", system-ui, -apple-system, sans-serif;
+    --mono:"JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    background:
+      radial-gradient(1100px 520px at 78% -8%, rgba(169,139,255,.10), transparent 60%),
+      radial-gradient(900px 480px at 0% 4%, rgba(39,208,224,.08), transparent 55%),
+      var(--bg);
+    color:var(--ink);
+    font-family:var(--body);
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1080px;margin:0 auto;padding:30px 22px 70px}
+  a{color:inherit}
+
+  /* ---------- HERO / BRIEFING ---------- */
+  .brief{
+    position:relative;
+    border:1px solid var(--line);
+    background:linear-gradient(160deg, var(--panel2), var(--panel));
+    border-radius:20px;
+    padding:26px 26px 22px;
+    overflow:hidden;
+  }
+  .brief::after{
+    content:"";position:absolute;inset:0;
+    background:repeating-linear-gradient(135deg, rgba(255,255,255,.025) 0 2px, transparent 2px 9px);
+    pointer-events:none;mask:linear-gradient(180deg,#000,transparent 70%);
+  }
+  .brief .kicker{
+    font-family:var(--mono);font-size:11.5px;letter-spacing:.22em;
+    text-transform:uppercase;color:var(--mut);display:flex;gap:10px;align-items:center;flex-wrap:wrap;
+  }
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--c6);box-shadow:0 0 10px var(--c6)}
+  .brief h1{
+    font-family:var(--disp);font-weight:700;letter-spacing:-.02em;
+    font-size:clamp(28px,5.4vw,46px);line-height:1.02;margin:14px 0 6px;
+  }
+  .brief h1 b{
+    background:linear-gradient(90deg,var(--c5),var(--c7));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .brief p.lead{color:var(--mut);max-width:62ch;margin:6px 0 0;font-size:15px}
+  .facts{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+  .fact{
+    border:1px solid var(--line);background:rgba(255,255,255,.02);
+    border-radius:12px;padding:9px 13px;display:flex;flex-direction:column;gap:1px;min-width:96px;
+  }
+  .fact span{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--mut2)}
+  .fact strong{font-family:var(--disp);font-size:18px;font-weight:600}
+  .fact strong em{font-style:normal;color:var(--c11)}
+
+  /* progress */
+  .xp{margin-top:20px}
+  .xp-top{display:flex;justify-content:space-between;align-items:baseline;font-family:var(--mono);font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--mut)}
+  #xp-label b{color:var(--ink)}
+  .xp-track{height:9px;border-radius:99px;background:rgba(255,255,255,.06);margin-top:8px;overflow:hidden;border:1px solid var(--line)}
+  #xp-fill{height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,var(--c3),var(--c5),var(--c6),var(--c7),var(--c11));transition:width .45s cubic-bezier(.2,.7,.3,1)}
+
+  /* ---------- NAV CHIPS ---------- */
+  .nav{display:flex;gap:9px;flex-wrap:wrap;margin:22px 0 6px;position:sticky;top:0;z-index:20;
+       padding:11px 0;backdrop-filter:blur(9px);
+       background:linear-gradient(180deg,rgba(13,16,24,.92),rgba(13,16,24,.55));
+       border-bottom:1px solid var(--line)}
+  .chip{
+    text-decoration:none;font-family:var(--mono);font-size:12px;letter-spacing:.04em;
+    padding:7px 12px;border-radius:99px;border:1px solid var(--line2);color:var(--mut);
+    display:inline-flex;gap:7px;align-items:center;transition:.18s;white-space:nowrap;
+  }
+  .chip b{color:var(--ink)}
+  .chip .pin{width:8px;height:8px;border-radius:2px;background:var(--cc)}
+  .chip:hover{color:var(--ink);border-color:var(--cc);transform:translateY(-1px);background:rgba(255,255,255,.03)}
+
+  /* ---------- MODULE ---------- */
+  .module{margin-top:42px;scroll-margin-top:64px}
+  .mod-head{display:flex;align-items:center;gap:14px;margin-bottom:6px}
+  .badge{
+    width:46px;height:46px;border-radius:13px;flex:none;display:grid;place-items:center;
+    font-family:var(--mono);font-weight:700;font-size:16px;color:var(--bg);
+    background:var(--accent);box-shadow:0 6px 20px -6px var(--accent);
+  }
+  .mod-head .t .code{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--mut2)}
+  .mod-head .t h2{font-family:var(--disp);font-weight:700;letter-spacing:-.01em;font-size:clamp(20px,3.4vw,27px);margin:1px 0 0}
+  .mark{
+    margin-left:auto;cursor:pointer;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+    border:1px solid var(--line2);background:transparent;color:var(--mut);border-radius:99px;padding:7px 13px;
+    display:inline-flex;gap:7px;align-items:center;transition:.18s;
+  }
+  .mark .box{width:13px;height:13px;border-radius:4px;border:1.5px solid var(--mut2);display:grid;place-items:center;transition:.18s}
+  .mark:hover{color:var(--ink);border-color:var(--accent)}
+  .mark.done{color:var(--accent);border-color:var(--accent)}
+  .mark.done .box{background:var(--accent);border-color:var(--accent)}
+  .mark.done .box::after{content:"✓";color:var(--bg);font-size:10px;font-weight:700;line-height:1}
+  .rule{height:2px;border-radius:2px;margin:14px 0 20px;
+    background:linear-gradient(90deg,var(--accent),transparent 75%);opacity:.55}
+
+  /* cards & grids */
+  .grid{display:grid;gap:14px}
+  .g2{grid-template-columns:repeat(2,1fr)}
+  .g3{grid-template-columns:repeat(3,1fr)}
+  .g4{grid-template-columns:repeat(4,1fr)}
+  .card{
+    border:1px solid var(--line);background:var(--panel);border-radius:15px;padding:16px 16px 15px;transition:.18s;
+  }
+  .card:hover{border-color:var(--line2);transform:translateY(-2px)}
+  .card .hd{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+  .ico{width:30px;height:30px;border-radius:9px;flex:none;display:grid;place-items:center;
+       background:color-mix(in srgb,var(--accent) 18%,transparent);color:var(--accent)}
+  .ico svg{width:17px;height:17px;display:block}
+  .card h3{font-family:var(--disp);font-size:15.5px;font-weight:600;margin:0;letter-spacing:-.01em}
+  .card h3 .sub{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:var(--mut2);text-transform:uppercase;font-weight:500;margin-top:2px}
+  .card p{margin:0;color:var(--mut);font-size:13.5px}
+  .card p + p{margin-top:8px}
+  .eg{margin-top:9px;font-size:12.5px;color:var(--mut);border-top:1px dashed var(--line2);padding-top:9px}
+  .eg > b:first-child{color:var(--accent);font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;display:block;margin-bottom:2px}
+  .eg b{color:var(--ink)}
+
+  .lead-row{color:var(--mut);font-size:14.5px;max-width:70ch;margin:0 0 16px}
+  .lead-row b{color:var(--ink)}
+
+  /* mnemonic / quote callouts */
+  .mnemonic{
+    display:flex;gap:13px;align-items:flex-start;flex-wrap:wrap;border-radius:14px;padding:13px 15px;margin:16px 0;
+    background:color-mix(in srgb,var(--accent) 9%,var(--panel));
+    border:1px solid color-mix(in srgb,var(--accent) 35%,transparent);
+  }
+  .mnemonic .tag{font-family:var(--mono);font-weight:700;font-size:12px;letter-spacing:.12em;color:var(--accent);
+    border:1px solid color-mix(in srgb,var(--accent) 45%,transparent);border-radius:8px;padding:4px 9px;white-space:nowrap;text-transform:uppercase;flex:none}
+  .mnemonic .mx{font-size:13.5px;color:var(--ink);flex:1 1 220px;min-width:0;overflow-wrap:break-word}
+  .mnemonic .mx b{color:var(--accent)}
+  .mnemonic .mx span{color:var(--mut)}
+
+  .quote{border-left:none;background:var(--panel);border:1px solid var(--line);border-radius:14px;
+    padding:14px 16px;margin:16px 0;font-size:14px;color:var(--ink)}
+  .quote .src{display:block;margin-top:6px;font-family:var(--mono);font-size:11px;color:var(--mut2);letter-spacing:.08em}
+
+  /* apply-it hook */
+  .apply{display:flex;gap:12px;align-items:flex-start;margin-top:18px;border-radius:14px;padding:14px 16px;
+    background:linear-gradient(120deg,rgba(255,255,255,.035),transparent);border:1px dashed var(--line2)}
+  .apply .lab{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);flex:none;padding-top:1px}
+  .apply p{margin:0;font-size:13.5px;color:var(--mut)}
+  .apply p b{color:var(--ink)}
+
+  .subhead{font-family:var(--disp);font-weight:600;font-size:13px;letter-spacing:.05em;text-transform:uppercase;
+    color:var(--mut);margin:24px 0 12px;display:flex;align-items:center;gap:10px}
+  .subhead::before{content:"";width:18px;height:2px;border-radius:2px;background:var(--accent)}
+
+  /* diagram frame */
+  .diagram{border:1px solid var(--line);background:
+      radial-gradient(420px 200px at 50% -10%, color-mix(in srgb,var(--accent) 10%,transparent), transparent 70%),
+      var(--bg2);
+    border-radius:16px;padding:18px;margin:16px 0;text-align:center}
+  .diagram svg{max-width:100%;height:auto}
+  .cap{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--mut2);margin-top:8px}
+
+  /* Mendelow matrix */
+  .matrix-wrap{display:grid;grid-template-columns:26px 1fr;gap:8px;margin:16px 0}
+  .axis-y{writing-mode:vertical-rl;transform:rotate(180deg);font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--mut);text-align:center;align-self:center}
+  .matrix{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .quad{border:1px solid var(--line);border-radius:13px;padding:13px 14px;background:var(--panel)}
+  .quad .pwr{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--mut2)}
+  .quad h4{font-family:var(--disp);font-size:15px;margin:3px 0 4px;font-weight:600}
+  .quad.q1 h4{color:#fb7793}.quad.q2 h4{color:#f7a93c}.quad.q3 h4{color:#3ddb8e}.quad.q4 h4{color:#7f8aa6}
+  .quad p{margin:0;font-size:12.5px;color:var(--mut)}
+  .quad .strat{margin-top:6px;font-family:var(--mono);font-size:11px;color:var(--ink)}
+  .axis-x{grid-column:2;text-align:center;font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--mut);margin-top:2px}
+
+  /* flow (UEL / DECIDE) */
+  .flow{display:flex;gap:10px;flex-wrap:wrap;align-items:stretch;margin:16px 0}
+  .step{flex:1 1 150px;border:1px solid var(--line);background:var(--panel);border-radius:13px;padding:13px 14px;position:relative}
+  .step .n{font-family:var(--mono);font-weight:700;font-size:13px;color:var(--accent)}
+  .step h4{font-family:var(--disp);font-size:14px;margin:4px 0 4px;font-weight:600;letter-spacing:-.01em}
+  .step p{margin:0;font-size:12.5px;color:var(--mut)}
+  .loopnote{display:inline-flex;align-items:center;gap:8px;margin-top:6px;font-family:var(--mono);font-size:11.5px;
+    color:var(--accent);border:1px dashed color-mix(in srgb,var(--accent) 45%,transparent);border-radius:99px;padding:6px 12px}
+
+  /* DECIDE pipeline */
+  .decide{display:flex;gap:9px;flex-wrap:wrap;margin:16px 0}
+  .dstep{flex:1 1 150px;border:1px solid var(--line);background:var(--panel);border-radius:13px;padding:12px 13px;display:flex;gap:11px;align-items:flex-start}
+  .dstep .l{width:30px;height:30px;border-radius:9px;flex:none;display:grid;place-items:center;font-family:var(--mono);font-weight:700;
+    background:var(--accent);color:var(--bg);font-size:15px}
+  .dstep b{font-family:var(--disp);font-size:13.5px;display:block;margin-bottom:1px}
+  .dstep p{margin:0;font-size:12px;color:var(--mut)}
+
+  /* compare formative vs summative */
+  .compare{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0}
+  .col{border:1px solid var(--line);border-radius:14px;padding:15px 16px;background:var(--panel)}
+  .col.form{box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--c6) 22%,transparent)}
+  .col.summ{box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--c11) 22%,transparent)}
+  .col h4{font-family:var(--disp);font-size:16px;margin:0 0 3px;font-weight:700}
+  .col.form h4{color:var(--c6)}.col.summ h4{color:var(--c11)}
+  .col .when{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--mut2);margin-bottom:9px}
+  .col ul{margin:0;padding-left:17px;color:var(--mut);font-size:13px}
+  .col ul li{margin:4px 0}
+
+  /* Nielsen checklist */
+  .checks{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:14px 0}
+  .chk{border:1px solid var(--line);background:var(--panel);border-radius:12px;padding:11px 13px;display:flex;gap:11px;align-items:flex-start}
+  .chk .num{font-family:var(--mono);font-weight:700;font-size:12px;color:var(--accent);flex:none;width:20px;text-align:center;
+    border:1px solid color-mix(in srgb,var(--accent) 40%,transparent);border-radius:6px;padding:2px 0;line-height:1}
+  .chk b{font-family:var(--disp);font-size:13.5px;display:block;font-weight:600}
+  .chk p{margin:1px 0 0;font-size:12px;color:var(--mut)}
+
+  /* footer cheat sheet */
+  .foot{margin-top:54px;border:1px solid var(--line);border-radius:20px;padding:24px;background:linear-gradient(160deg,var(--panel2),var(--panel))}
+  .foot h2{font-family:var(--disp);font-size:21px;font-weight:700;margin:0 0 4px}
+  .foot .sub{color:var(--mut);font-size:13.5px;margin:0 0 18px}
+  .cheat{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+  .cc{border:1px solid var(--line);border-radius:12px;padding:12px 14px;background:rgba(255,255,255,.02)}
+  .cc .h{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:5px}
+  .cc .h.c3{color:var(--c3)}.cc .h.c5{color:var(--c5)}.cc .h.c6{color:var(--c6)}.cc .h.c7{color:var(--c7)}.cc .h.c11{color:var(--c11)}
+  .cc p{margin:0;font-size:12.5px;color:var(--ink)}
+  .cc p b{font-family:var(--mono);color:var(--mut)}
+  .signoff{margin-top:20px;padding-top:18px;border-top:1px solid var(--line);font-size:14px;color:var(--mut)}
+  .signoff b{color:var(--ink)}
+
+  /* responsive */
+  @media (max-width:820px){
+    .g4{grid-template-columns:repeat(2,1fr)}
+    .g3{grid-template-columns:repeat(2,1fr)}
+  }
+  @media (max-width:560px){
+    .wrap{padding:22px 15px 60px}
+    .g2,.g3,.g4,.matrix,.compare,.checks,.cheat{grid-template-columns:1fr}
+    .nav{position:static}
+    .mark{margin-left:0}
+    .mod-head{flex-wrap:wrap}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{transition:none!important;scroll-behavior:auto!important}
+  }
+  :focus-visible{outline:2px solid var(--c5);outline-offset:3px;border-radius:6px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ============ HERO ============ -->
+  <header class="brief">
+    <div class="kicker"><span class="dot"></span> CT026-3-2 · Human–Computer Interaction · Revision Deck</div>
+    <h1>Five modules between you<br>and the <b>Friday boss fight.</b></h1>
+    <p class="lead">Everything from Chapters 3, 5, 6, 7 &amp; 11 in one place — definitions tight, diagrams for the stuff that's annoying to memorise, and quick hooks for applying it to a real app in the case study. Skim it, then tick each module off.</p>
+
+    <div class="facts">
+      <div class="fact"><span>Format</span><strong>Short essay</strong></div>
+      <div class="fact"><span>Marks</span><strong><em>40</em></strong></div>
+      <div class="fact"><span>Questions</span><strong>7 total</strong></div>
+      <div class="fact"><span>Twist</span><strong>Case study</strong></div>
+    </div>
+
+    <div class="xp">
+      <div class="xp-top">
+        <span id="xp-label"><b>0</b> / 5 modules cleared</span>
+        <span>progress</span>
+      </div>
+      <div class="xp-track"><div id="xp-fill"></div></div>
+    </div>
+  </header>
+
+  <!-- ============ NAV ============ -->
+  <nav class="nav">
+    <a class="chip" style="--cc:var(--c3)"  href="#m3"><span class="pin"></span>03 · <b>Human Factors</b></a>
+    <a class="chip" style="--cc:var(--c5)"  href="#m5"><span class="pin"></span>05 · <b>Task Analysis</b></a>
+    <a class="chip" style="--cc:var(--c6)"  href="#m6"><span class="pin"></span>06 · <b>Usability &amp; UEL</b></a>
+    <a class="chip" style="--cc:var(--c7)"  href="#m7"><span class="pin"></span>07 · <b>Design Principles</b></a>
+    <a class="chip" style="--cc:var(--c11)" href="#m11"><span class="pin"></span>11 · <b>Evaluation</b></a>
+  </nav>
+
+  <!-- =================================================== -->
+  <!-- MODULE 3 : HUMAN FACTORS                            -->
+  <!-- =================================================== -->
+  <section class="module" id="m3" style="--accent:var(--c3)">
+    <div class="mod-head">
+      <div class="badge">03</div>
+      <div class="t"><div class="code">Topic 2 · Module 03</div><h2>Human Factors &amp; Stakeholders</h2></div>
+      <button class="mark" data-mod="m3"><span class="box"></span>Mark reviewed</button>
+    </div>
+    <div class="rule"></div>
+
+    <p class="lead-row"><b>The big idea:</b> before you design anything, understand the human. Human factors = the study of human <b>limitations &amp; capabilities</b> so we can design products that are comfortable, accessible and error-resistant. Users are limited in how much they can process — design around that.</p>
+
+    <div class="diagram">
+      <svg viewBox="0 0 360 230" role="img" aria-label="The three areas of human factors">
+        <line x1="180" y1="48" x2="70" y2="186" stroke="var(--c3)" stroke-width="1.6" opacity=".6"/>
+        <line x1="180" y1="48" x2="290" y2="186" stroke="var(--c3)" stroke-width="1.6" opacity=".6"/>
+        <line x1="70" y1="186" x2="290" y2="186" stroke="var(--c3)" stroke-width="1.6" opacity=".6"/>
+        <circle cx="180" cy="120" r="30" fill="none" stroke="rgba(255,255,255,.18)" stroke-width="1.4" stroke-dasharray="3 4"/>
+        <text x="180" y="116" text-anchor="middle" fill="#9aa4bd" font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="1.5">THE</text>
+        <text x="180" y="130" text-anchor="middle" fill="#eef1f7" font-family="Space Grotesk, sans-serif" font-size="14" font-weight="700">USER</text>
+        <g font-family="Space Grotesk, sans-serif">
+          <circle cx="180" cy="48" r="9" fill="#f7a93c"/>
+          <text x="180" y="30" text-anchor="middle" fill="#f7a93c" font-size="14" font-weight="700">PERCEPTION</text>
+          <text x="180" y="68" text-anchor="middle" fill="#9aa4bd" font-size="10.5">senses · sight</text>
+          <circle cx="70" cy="186" r="9" fill="#f7a93c"/>
+          <text x="64" y="210" text-anchor="middle" fill="#f7a93c" font-size="14" font-weight="700">COGNITION</text>
+          <text x="64" y="225" text-anchor="middle" fill="#9aa4bd" font-size="10.5">thinking · memory</text>
+          <circle cx="290" cy="186" r="9" fill="#f7a93c"/>
+          <text x="296" y="210" text-anchor="middle" fill="#f7a93c" font-size="14" font-weight="700">PHYSICAL</text>
+          <text x="296" y="225" text-anchor="middle" fill="#9aa4bd" font-size="10.5">body · ergonomics</text>
+        </g>
+      </svg>
+      <div class="cap">The 3 areas of human factors — they overlap on every interaction</div>
+    </div>
+
+    <div class="grid g3">
+      <div class="card">
+        <div class="hd"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 20c0-3 3-5 6-5s6 2 6 5"/><circle cx="12" cy="7" r="3.2"/><path d="M3 12h2M19 12h2M12 3V1"/></svg></div>
+          <h3>Physical<span class="sub">physiology · ergonomics</span></h3></div>
+        <p>The body's limits: reach, size, strength, speed, stamina. Needs <b>ergonomic</b> design so tasks feel efficient &amp; comfortable.</p>
+        <p>3 things specialists analyse — <b>Operations</b> (the motor actions: tap, swipe, type), <b>Dimension</b> (size/shape/weight vs the hand), <b>Context</b> (environment: driving, gloves, sunlight).</p>
+        <div class="eg"><b>Watch for</b>Movement time depends on a target's <b>size &amp; distance</b> (Fitts's Law): make key buttons big &amp; near the thumb; edges/corners are easy hits.</div>
+      </div>
+
+      <div class="card">
+        <div class="hd"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3a5 5 0 0 0-5 5c0 2-2 2.5-2 4.5S6 16 7 16m5-13a5 5 0 0 1 5 5c0 2 2 2.5 2 4.5S18 16 17 16M9 16v2a3 3 0 0 0 6 0v-2"/></svg></div>
+          <h3>Cognition<span class="sub">mental effort</span></h3></div>
+        <p>How we understand, think, remember &amp; reason. The mental effort to use a product = <b>cognitive load</b>. Too much load → frustration &amp; errors.</p>
+        <p>Four cognition levers: <b>Attention</b> (focus, kill clutter), <b>Memory</b>, <b>Learning</b> (build on what users know), <b>Language</b> (plain words, short chunks).</p>
+        <div class="eg"><b>Don't forget</b>Causes of high load: info overload, visual clutter, hard navigation, complex forms, unclear language.</div>
+      </div>
+
+      <div class="card">
+        <div class="hd"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg></div>
+          <h3>Perception<span class="sub">the senses</span></h3></div>
+        <p>How we take input through our senses (sight, sound, touch, taste, smell). In GUIs, almost everything is <b>visual</b>.</p>
+        <p>Eyes jump around in quick fixations called <b>saccades</b> — putting something on screen doesn't guarantee it's seen. Guide the eye.</p>
+        <div class="eg"><b>Improve it</b>Group related info together, use <b>proximity</b>, visual clues (arrows/icons), and good spacing/kerning.</div>
+      </div>
+    </div>
+
+    <div class="mnemonic"><span class="tag">Load × 3</span><div class="mx"><b>I-E-G cognitive load:</b> <b>Intrinsic</b> = task's built-in difficulty · <b>Extraneous</b> = bad design noise (fonts, fluff) · <b>Germane</b> = effort to build mental schemas. <span>Designers cut Extraneous, manage Intrinsic.</span></div></div>
+
+    <div class="mnemonic"><span class="tag">7 ± 2</span><div class="mx"><b>Miller's Law:</b> short-term memory holds about <b>7 ± 2</b> chunks. <span>So keep menus, options and list rows to ~5–9. Chunk long pages into sections (the eBay trick).</span></div></div>
+
+    <div class="subhead">Metaphors</div>
+    <div class="grid g2">
+      <div class="card">
+        <h3>Interface metaphor</h3>
+        <p>A whole concept mapped from the real world onto the system — the <b>desktop, folders, recycle bin</b>. Maps real-world elements onto system elements.</p>
+      </div>
+      <div class="card">
+        <h3>Iconic metaphor</h3>
+        <p>A single symbol standing for a function — a <b>floppy = save</b>, magnifier = search. Use concrete objects + tooltips; avoid abstract ideas.</p>
+      </div>
+    </div>
+    <div class="mnemonic"><span class="tag">Why use them</span><div class="mx">Familiar → <b>easier to learn</b>, builds on existing knowledge, and acts as a shortcut to complex concepts. Helps <b>recognition over recall</b>.</div></div>
+
+    <div class="subhead">Stakeholder analysis</div>
+    <p class="lead-row">A <b>stakeholder</b> is anyone who can affect or is affected by the project. <b>Internal</b> = direct relationship (staff, owners, investors). <b>External</b> = affected from outside (customers, suppliers, government, media). Stakeholder analysis = identify them, group them by power &amp; interest, and decide how to communicate with each.</p>
+
+    <div class="matrix-wrap">
+      <div class="axis-y">Power →</div>
+      <div>
+        <div class="matrix">
+          <div class="quad q2"><div class="pwr">High power · Low interest</div><h4>Context-setters</h4><p>Powerful but not very engaged — can still hurt the project.</p><div class="strat">▸ Keep satisfied · e.g. Government</div></div>
+          <div class="quad q1"><div class="pwr">High power · High interest</div><h4>Players</h4><p>Key decision-makers. Engage deeply &amp; often.</p><div class="strat">▸ Manage closely · e.g. Mgmt, shareholders</div></div>
+          <div class="quad q4"><div class="pwr">Low power · Low interest</div><h4>Crowd</h4><p>Little impact, little interest. Just watch for change.</p><div class="strat">▸ Monitor · e.g. local community</div></div>
+          <div class="quad q3"><div class="pwr">Low power · High interest</div><h4>Subjects</h4><p>Affected, but no authority. Keep them on side.</p><div class="strat">▸ Keep informed · e.g. full-time staff</div></div>
+        </div>
+        <div class="axis-x">Interest →</div>
+      </div>
+    </div>
+
+    <div class="mnemonic"><span class="tag">Mendelow 3 steps</span><div class="mx"><b>1.</b> List stakeholders (name, role, internal/external, why). <b>2.</b> Plot &amp; group them on the <b>power/interest grid</b>. <b>3.</b> Decide an engagement/communication strategy for each.</div></div>
+
+    <div class="apply"><span class="lab">Apply it →</span><p><b>For a comms app (e.g. WhatsApp):</b> Perception = unread badges &amp; ticks must be instantly visible; Cognition = chat list chunked, low load; Physical = send button in the thumb zone. Stakeholders → users = <b>Subjects</b>, the parent company = <b>Players</b>, regulators = <b>Context-setters</b>.</p></div>
+  </section>
+
+  <!-- =================================================== -->
+  <!-- MODULE 5 : TASK ANALYSIS                            -->
+  <!-- =================================================== -->
+  <section class="module" id="m5" style="--accent:var(--c5)">
+    <div class="mod-head">
+      <div class="badge">05</div>
+      <div class="t"><div class="code">Module 05</div><h2>Task Analysis &amp; HTA</h2></div>
+      <button class="mark" data-mod="m5"><span class="box"></span>Mark reviewed</button>
+    </div>
+    <div class="rule"></div>
+
+    <p class="lead-row"><b>What it is:</b> a method for understanding the tasks users actually carry out with an <b>existing</b> system — the sequence, complexity, tools, skills and info needed. It studies what <em>is</em>, not new ideas yet. Done via interviews, contextual inquiry and task-based usability testing.</p>
+
+    <div class="mnemonic"><span class="tag">Norman 1988</span><div class="mx"><b>Goal</b> = the state the user wants to reach. <b>Task</b> = the activity done to bring about that goal. <span>Task analysis maps the real steps — which often differ from what we assume.</span></div></div>
+
+    <div class="subhead">Three approaches</div>
+    <div class="grid g3">
+      <div class="card"><div class="hd"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 12h7l2-7 3 14 2-7h4"/></svg></div><h3>Contextual<span class="sub">in the wild</span></h3></div><p>Observe &amp; interview users in their <b>real environment</b> to catch true needs &amp; "hot-button" motivators — e.g. test a bike-share app outside, on the move.</p></div>
+      <div class="card"><div class="hd"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div><h3>Cognitive<span class="sub">the mind</span></h3></div><p>Focuses on the deeper mental processes — <b>decisions, attention, memory, judgement</b> — to see how users understand &amp; perform a task.</p></div>
+      <div class="card"><div class="hd"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="9" y="3" width="6" height="4" rx="1"/><rect x="3" y="16" width="6" height="4" rx="1"/><rect x="15" y="16" width="6" height="4" rx="1"/><path d="M12 7v5M6 16v-2h12v2"/></svg></div><h3>Hierarchical (HTA)<span class="sub">break it down</span></h3></div><p>Breaks a complex task into smaller <b>subtasks</b> so each step can be analysed on its own. The one you'll be drawing.</p></div>
+    </div>
+
+    <div class="diagram">
+      <svg viewBox="0 0 540 260" role="img" aria-label="Hierarchical Task Analysis tree">
+        <g font-family="Space Grotesk, sans-serif" font-size="12">
+          <rect x="205" y="14" width="130" height="38" rx="9" fill="#27d0e0"/>
+          <text x="270" y="33" text-anchor="middle" fill="#0d1018" font-weight="700">0. GOAL</text>
+          <text x="270" y="46" text-anchor="middle" fill="#0d1018" font-size="9.5">track my parcel</text>
+
+          <line x1="270" y1="52" x2="270" y2="74" stroke="#27d0e0" stroke-width="1.5"/>
+          <line x1="95" y1="74" x2="445" y2="74" stroke="#27d0e0" stroke-width="1.5"/>
+          <line x1="95" y1="74" x2="95" y2="96" stroke="#27d0e0" stroke-width="1.5"/>
+          <line x1="270" y1="74" x2="270" y2="96" stroke="#27d0e0" stroke-width="1.5"/>
+          <line x1="445" y1="74" x2="445" y2="96" stroke="#27d0e0" stroke-width="1.5"/>
+
+          <g fill="none" stroke="rgba(255,255,255,.14)"><rect x="35" y="96" width="120" height="40" rx="9"/><rect x="210" y="96" width="120" height="40" rx="9"/><rect x="385" y="96" width="120" height="40" rx="9"/></g>
+          <text x="95"  y="113" text-anchor="middle" fill="#eef1f7" font-weight="600">1. Open site</text>
+          <text x="270" y="113" text-anchor="middle" fill="#eef1f7" font-weight="600">2. My Purchases</text>
+          <text x="445" y="113" text-anchor="middle" fill="#eef1f7" font-weight="600">3. Pick parcel</text>
+          <text x="95"  y="128" text-anchor="middle" fill="#9aa4bd" font-size="9.5">task</text>
+          <text x="270" y="128" text-anchor="middle" fill="#9aa4bd" font-size="9.5">task</text>
+          <text x="445" y="128" text-anchor="middle" fill="#9aa4bd" font-size="9.5">task</text>
+
+          <line x1="270" y1="136" x2="270" y2="158" stroke="#27d0e0" stroke-width="1.3"/>
+          <line x1="200" y1="158" x2="340" y2="158" stroke="#27d0e0" stroke-width="1.3"/>
+          <line x1="200" y1="158" x2="200" y2="180" stroke="#27d0e0" stroke-width="1.3"/>
+          <line x1="340" y1="158" x2="340" y2="180" stroke="#27d0e0" stroke-width="1.3"/>
+          <g fill="none" stroke="rgba(39,208,224,.4)"><rect x="140" y="180" width="120" height="40" rx="9"/><rect x="280" y="180" width="120" height="40" rx="9"/></g>
+          <text x="200" y="197" text-anchor="middle" fill="#27d0e0" font-size="11" font-weight="600">2.1 find user</text>
+          <text x="340" y="197" text-anchor="middle" fill="#27d0e0" font-size="11" font-weight="600">2.2 click order</text>
+          <text x="200" y="211" text-anchor="middle" fill="#9aa4bd" font-size="9.5">subtask</text>
+          <text x="340" y="211" text-anchor="middle" fill="#9aa4bd" font-size="9.5">subtask</text>
+
+          <rect x="360" y="236" width="180" height="22" rx="6" fill="none" stroke="rgba(255,255,255,.14)" stroke-dasharray="3 3"/>
+          <text x="450" y="251" text-anchor="middle" fill="#9aa4bd" font-size="10.5" font-family="JetBrains Mono, monospace">Plan 0: do 1 → 2 → 3 in order</text>
+        </g>
+      </svg>
+      <div class="cap">HTA = Goal → Tasks → Subtasks, with a Plan saying the order</div>
+    </div>
+
+    <div class="subhead">How to conduct an HTA</div>
+    <div class="flow">
+      <div class="step"><div class="n">01</div><h4>Prep &amp; research</h4><p>Gather user needs, tasks, pain points; observe the system used for real.</p></div>
+      <div class="step"><div class="n">02</div><h4>Define use case</h4><p>Set the scope — what to map &amp; why. This is the <b>GOAL</b> component.</p></div>
+      <div class="step"><div class="n">03</div><h4>Initial flowchart</h4><p>Draft all steps: list the tasks, subtasks &amp; plans.</p></div>
+      <div class="step"><div class="n">04</div><h4>Develop diagram</h4><p>Build it — <b>graphical</b> or <b>textual</b> representation.</p></div>
+      <div class="step"><div class="n">05</div><h4>Review</h4><p>Check accuracy via a walk-through with stakeholders.</p></div>
+      <div class="step"><div class="n">06</div><h4>Report findings</h4><p>Turn it into a matrix &amp; recommend fixes.</p></div>
+    </div>
+
+    <div class="mnemonic"><span class="tag">Analyse with C-D-F</span><div class="mx">Score each step on <b>Criticality</b>, <b>Difficulty</b> &amp; <b>Frequency</b> (H/M/L). <span>Spots the confusing, high-traffic steps that need redesign — e.g. an unlabelled icon with no feedback.</span></div></div>
+
+    <div class="apply"><span class="lab">Apply it →</span><p><b>If asked to draw an HTA</b> for an app (login, post a story, send money), state the <b>Goal</b>, list 3–5 <b>tasks</b>, break one into <b>subtasks</b>, and add a one-line <b>Plan</b> for the order. Mention any assumptions.</p></div>
+  </section>
+
+  <!-- =================================================== -->
+  <!-- MODULE 6 : USABILITY & UEL                          -->
+  <!-- =================================================== -->
+  <section class="module" id="m6" style="--accent:var(--c6)">
+    <div class="mod-head">
+      <div class="badge">06</div>
+      <div class="t"><div class="code">Module 06</div><h2>Usability &amp; the UEL Model</h2></div>
+      <button class="mark" data-mod="m6"><span class="box"></span>Mark reviewed</button>
+    </div>
+    <div class="rule"></div>
+
+    <div class="quote">"Usability: the extent to which a product can be used by specified users to achieve specified goals with <b>effectiveness, efficiency and satisfaction</b> in a specified context of use."<span class="src">— ISO definition. Poor usability cuts productivity and raises cost, time &amp; effort.</span></div>
+
+    <div class="subhead">Nielsen's 5 usability attributes (2003)</div>
+    <div class="grid g3">
+      <div class="card"><h3>Learnability</h3><p>How easy is it for a <b>novice</b> to get started &amp; become competent quickly?</p></div>
+      <div class="card"><h3>Efficiency</h3><p>Once learned, how <b>fast</b> can users perform tasks (expert performance)?</p></div>
+      <div class="card"><h3>Memorability</h3><p>Coming back after a break, how easily do they <b>re-establish</b> proficiency?</p></div>
+      <div class="card"><h3>Errors</h3><p><b>Prevent</b> serious slips (don't put Delete next to Save) &amp; help users recover.</p></div>
+      <div class="card"><h3>Satisfaction</h3><p>How <b>pleasant</b> is it to use? Fun, helpful, rewarding — the user's point of view.</p></div>
+      <div class="card" style="display:flex;align-items:center;background:transparent;border-style:dashed">
+        <p style="font-family:var(--mono);color:var(--c6);font-size:13px;margin:0"><b>Remember as<br>L · E · M · E · S</b></p>
+      </div>
+    </div>
+
+    <div class="subhead">Who are you designing for?</div>
+    <div class="grid g3">
+      <div class="card"><h3>Novice<span class="sub">first-timers</span></h3><p>Little/no knowledge of the task or interface. Needs <b>learnability</b> &amp; hand-holding.</p></div>
+      <div class="card"><h3>Knowledgeable intermittent<span class="sub">casual</span></h3><p>Knows the task, uses it on &amp; off — struggles with <b>retention</b>. Needs <b>memorability</b>.</p></div>
+      <div class="card"><h3>Expert / power<span class="sub">frequent</span></h3><p>Knows task &amp; interface cold. Wants <b>shortcuts &amp; efficiency</b>.</p></div>
+    </div>
+
+    <div class="mnemonic"><span class="tag">Measure it</span><div class="mx"><b>Learnability/Memorability/Efficiency</b> → time novice/casual/expert users to do typical tasks. <b>Errors</b> → count minor &amp; catastrophic errors during a task.</div></div>
+
+    <div class="subhead">Usability Engineering Lifecycle — Bias &amp; Mayhew (2005)</div>
+    <p class="lead-row">A <b>cyclic</b> model bolted into product development to guide usability design, analysis &amp; testing. It loops — you keep iterating.</p>
+    <div class="flow">
+      <div class="step"><div class="n">①</div><h4>Users, tasks &amp; environment</h4><p>Stakeholder analysis, user profiling, task analysis.</p></div>
+      <div class="step"><div class="n">②</div><h4>Goals &amp; competitive analysis</h4><p>Pick usability goals + metrics + design guidelines; check rivals.</p></div>
+      <div class="step"><div class="n">③</div><h4>Design + prototype</h4><p>Parallel design → participatory design (card sorting) → first prototype.</p></div>
+      <div class="step"><div class="n">④</div><h4>Formative testing</h4><p>Evaluate as early as possible to catch issues.</p></div>
+      <div class="step"><div class="n">⑤</div><h4>Final release concept</h4><p>Hand the agreed design to development to build.</p></div>
+    </div>
+    <span class="loopnote">↺ cyclic — findings feed back into earlier stages</span>
+
+    <div class="apply"><span class="lab">Apply it →</span><p><b>"Which usability goals did you focus on?"</b> is exactly the presentation question. For most student apps: <b>Learnability + Efficiency + Error prevention</b>. Always justify <em>why</em> that goal fits that page/user.</p></div>
+  </section>
+
+  <!-- =================================================== -->
+  <!-- MODULE 7 : DESIGN PRINCIPLES                        -->
+  <!-- =================================================== -->
+  <section class="module" id="m7" style="--accent:var(--c7)">
+    <div class="mod-head">
+      <div class="badge">07</div>
+      <div class="t"><div class="code">Topic 3 · Module 07</div><h2>Don Norman's Design Principles</h2></div>
+      <button class="mark" data-mod="m7"><span class="box"></span>Mark reviewed</button>
+    </div>
+    <div class="rule"></div>
+
+    <p class="lead-row"><b>The compass.</b> Six principles that reduce errors and make interaction intuitive. They guide decisions throughout a project — and they're the language you use to evaluate any UI.</p>
+
+    <div class="grid g3">
+      <div class="card"><div class="hd"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg></div><h3>1 · Visibility</h3></div><p>Make the <b>most-needed functions easy to see &amp; find</b>. Don't show everything — prioritise.</p><div class="eg"><b>Example</b>Tab bars over hidden hamburger menus; Gmail's obvious "Compose".</div></div>
+
+      <div class="card"><div class="hd"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 5h16v10H7l-3 3V5Z"/><path d="M8 9h8M8 12h5"/></svg></div><h3>2 · Feedback</h3></div><p>Send info back about what just happened so users never guess. Audio, visual, tactile, verbal.</p><div class="eg"><b>Two types</b><b>Activation</b> = sensory (button changes colour). <b>Behavioural</b> = "it worked" (order confirmed).</div></div>
+
+      <div class="card"><div class="hd"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></div><h3>3 · Constraints</h3></div><p>Restrict what's possible right now to stop mistakes — e.g. <b>greying out</b> options that aren't valid yet.</p><div class="eg"><b>Example</b>A checkout that forces steps in the correct sequence.</div></div>
+
+      <div class="card"><div class="hd"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 8h10l-3-3M4 8l3 3M20 16H10l3 3M20 16l-3-3"/></svg></div><h3>4 · Mapping</h3></div><p>A <b>natural relationship</b> between a control and its effect. Up/right = more, down/left = less.</p><div class="eg"><b>Example</b>Volume slider with growing bars; + on the right, − on the left.</div></div>
+
+      <div class="card"><div class="hd"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="7" height="7" rx="1.5"/><rect x="14" y="4" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></div><h3>5 · Consistency</h3></div><p>Same things look &amp; behave the <b>same way</b> — patterns. Nav, colours, button positions repeat.</p><div class="eg"><b>Why</b>Users form one mental model &amp; reuse it across the whole site.</div></div>
+
+      <div class="card"><div class="hd"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 11V5.5a1.5 1.5 0 0 1 3 0V11m0-1.5a1.5 1.5 0 0 1 3 0V11m0-1a1.5 1.5 0 0 1 3 0v4a5 5 0 0 1-5 5H10a4 4 0 0 1-3-1.3L4.5 18"/></svg></div><h3>6 · Affordances</h3></div><p>An object's look <b>tells you how to use it</b>. A 3-D button says "click me"; a slider says "drag me".</p><div class="eg"><b>In GUIs</b>Called <b>perceived affordances</b> — buttons, links, tabs, sliders, spinners.</div></div>
+    </div>
+
+    <div class="mnemonic"><span class="tag">Pair them up</span><div class="mx">Remember Norman's six in three pairs: <b>Visibility + Feedback</b> (can I see &amp; do I know it worked?) · <b>Constraints + Mapping</b> (what can I do &amp; does it make sense?) · <b>Consistency + Affordances</b> (is it familiar &amp; obvious?).</div></div>
+
+    <div class="apply"><span class="lab">Apply it →</span><p><b>This is the case-study goldmine.</b> For any page, name 2–3 principles and point to the actual element: "The login page uses <b>Feedback</b> (red text on wrong password) and <b>Constraints</b> (Login button disabled until both fields are filled)." Concrete element = full marks; just describing the page = 5/10.</p></div>
+  </section>
+
+  <!-- =================================================== -->
+  <!-- MODULE 11 : EVALUATION                              -->
+  <!-- =================================================== -->
+  <section class="module" id="m11" style="--accent:var(--c11)">
+    <div class="mod-head">
+      <div class="badge">11</div>
+      <div class="t"><div class="code">Topic 11 · Module 11</div><h2>Evaluation</h2></div>
+      <button class="mark" data-mod="m11"><span class="box"></span>Mark reviewed</button>
+    </div>
+    <div class="rule"></div>
+
+    <p class="lead-row"><b>What:</b> a systematic process of assessing an interface's usability, effectiveness &amp; experience using qualitative + quantitative data. <b>Why:</b> find usability issues early, improve UX, and validate design decisions before costly redesigns. <b>When:</b> from early concept (paper prototypes) right through to post-launch (analytics &amp; surveys).</p>
+
+    <div class="subhead">Formative vs Summative</div>
+    <div class="compare">
+      <div class="col form">
+        <h4>Formative</h4>
+        <div class="when">during design · iterative</div>
+        <ul><li>Done <b>while</b> designing/developing</li><li>Aims to <b>improve</b> the product</li><li>Catches issues <b>early</b></li><li>Mostly <b>qualitative</b> insight</li></ul>
+      </div>
+      <div class="col summ">
+        <h4>Summative</h4>
+        <div class="when">after build · final</div>
+        <ul><li>Done <b>after</b> development is complete</li><li><b>Judges</b> overall effectiveness</li><li>Measures vs <b>predefined criteria</b></li><li>Mostly <b>quantitative</b> measurement</li></ul>
+      </div>
+    </div>
+    <div class="mnemonic"><span class="tag">Trick</span><div class="mx"><b>Form</b>ative = <b>forming</b> it (still shaping). <b>Summ</b>ative = <b>summing up</b> (final verdict).</div></div>
+
+    <div class="subhead">The DECIDE framework</div>
+    <div class="decide">
+      <div class="dstep"><div class="l">D</div><div><b>Determine</b><p>the overall goals of the evaluation.</p></div></div>
+      <div class="dstep"><div class="l">E</div><div><b>Explore</b><p>the specific, measurable questions to answer.</p></div></div>
+      <div class="dstep"><div class="l">C</div><div><b>Choose</b><p>the evaluation paradigm &amp; techniques.</p></div></div>
+      <div class="dstep"><div class="l">I</div><div><b>Identify</b><p>practical issues (users, venue, kit, budget).</p></div></div>
+      <div class="dstep"><div class="l">D</div><div><b>Decide</b><p>how to handle ethics (consent forms, briefing).</p></div></div>
+      <div class="dstep"><div class="l">E</div><div><b>Evaluate</b><p>analyse &amp; present the data (exec summary, findings, recs).</p></div></div>
+    </div>
+
+    <div class="subhead">The 4 evaluation paradigms</div>
+    <div class="grid g4">
+      <div class="card"><h3>Quick &amp; Dirty<span class="sub">anytime</span></h3><p>Informal, fast feedback to check ideas match users. <b>Speed over documentation.</b></p></div>
+      <div class="card"><h3>Field studies<span class="sub">natural setting</span></h3><p>See what users do <b>naturally</b> &amp; how tech affects them. Finds requirements &amp; opportunities.</p></div>
+      <div class="card"><h3>Usability testing<span class="sub">real users</span></h3><p>Recruit target users; a facilitator runs <b>hands-on tasks</b> under controlled conditions while a researcher observes.</p></div>
+      <div class="card"><h3>Predictive<span class="sub">no users</span></h3><p>Experts predict problems using <b>heuristics</b> — quick &amp; cheap. <b>Heuristic evaluation</b> lives here.</p></div>
+    </div>
+
+    <div class="mnemonic"><span class="tag">Don't mix these up</span><div class="mx"><b>Usability testing = real target USERS.</b> <b>Heuristic evaluation = at least 3 EXPERTS</b>, no users needed, judged against Nielsen's heuristics. <span>Experts are impartial &amp; don't tie up internal staff.</span></div></div>
+
+    <div class="subhead">Nielsen's 10 Heuristics</div>
+    <div class="checks">
+      <div class="chk"><span class="num">1</span><div><b>Visibility of system status</b><p>Keep users informed with timely feedback.</p></div></div>
+      <div class="chk"><span class="num">2</span><div><b>Match system &amp; real world</b><p>Speak the user's language, not jargon.</p></div></div>
+      <div class="chk"><span class="num">3</span><div><b>User control &amp; freedom</b><p>Clear "emergency exit" — undo/redo.</p></div></div>
+      <div class="chk"><span class="num">4</span><div><b>Consistency &amp; standards</b><p>Follow platform conventions.</p></div></div>
+      <div class="chk"><span class="num">5</span><div><b>Error prevention</b><p>Stop problems before they happen.</p></div></div>
+      <div class="chk"><span class="num">6</span><div><b>Recognition over recall</b><p>Show options; don't make users remember.</p></div></div>
+      <div class="chk"><span class="num">7</span><div><b>Flexibility &amp; efficiency</b><p>Shortcuts for experts, hidden from novices.</p></div></div>
+      <div class="chk"><span class="num">8</span><div><b>Aesthetic &amp; minimalist</b><p>No irrelevant info competing for attention.</p></div></div>
+      <div class="chk"><span class="num">9</span><div><b>Recover from errors</b><p>Plain-language messages + a fix.</p></div></div>
+      <div class="chk"><span class="num">10</span><div><b>Help &amp; documentation</b><p>Best if not needed — but available when it is.</p></div></div>
+    </div>
+
+    <div class="apply"><span class="lab">Apply it →</span><p><b>Likely question:</b> "How many DECIDE stages?" → <b>6</b>. "Which test uses experts vs users?" → heuristic = experts, usability testing = users. To critique an app, walk it against a few of Nielsen's 10 and name the violation.</p></div>
+  </section>
+
+  <!-- ============ CHEAT SHEET FOOTER ============ -->
+  <footer class="foot">
+    <h2>60-second recall</h2>
+    <p class="sub">Glance over these right before you walk in. If a word jogs the whole concept, you're ready.</p>
+    <div class="cheat">
+      <div class="cc"><div class="h c3">03 · Human Factors</div><p><b>3 areas:</b> Perception · Cognition · Physical. <b>Load:</b> I-E-G. <b>Memory:</b> 7±2. <b>Physical:</b> O-D-C. <b>Mendelow:</b> Players · Context-setters · Subjects · Crowd.</p></div>
+      <div class="cc"><div class="h c5">05 · Task Analysis</div><p><b>Goal vs Task.</b> 3 approaches: Contextual · Cognitive · HTA. <b>HTA:</b> Goal → Tasks → Subtasks + Plan. <b>Matrix:</b> Criticality · Difficulty · Frequency.</p></div>
+      <div class="cc"><div class="h c6">06 · Usability &amp; UEL</div><p><b>5 attributes (LEMES):</b> Learnability · Efficiency · Memorability · Errors · Satisfaction. <b>Users:</b> Novice · Intermittent · Expert. <b>UEL = cyclic</b> (Bias &amp; Mayhew '05).</p></div>
+      <div class="cc"><div class="h c7">07 · Design Principles</div><p><b>Norman's 6:</b> Visibility · Feedback · Constraints · Mapping · Consistency · Affordances. Feedback = Activation + Behavioural.</p></div>
+      <div class="cc"><div class="h c11">11 · Evaluation</div><p><b>DECIDE</b> (6 stages). Formative=improve / Summative=judge. <b>Paradigms:</b> Quick&amp;Dirty · Field · Usability(users) · Predictive/Heuristic(experts). Nielsen = 10.</p></div>
+      <div class="cc"><div class="h c11" style="color:var(--mut)">★ Exam tip</div><p>It's a <b>case study</b> — always tie a concept to a <b>real element on a real app</b> and justify. Describing the page only = half marks. Name it, place it, justify it.</p></div>
+    </div>
+    <p class="signoff">That's the whole syllabus, Peng. Clear the five modules, glance at the recall strip Friday morning, and walk in knowing you've seen all of it. <b>You've got this. 🏁</b></p>
+  </footer>
+
+</div>
+
+<script>
+  // in-memory progress only (resets on reload) — no storage used
+  (function(){
+    var done = new Set();
+    var fill = document.getElementById('xp-fill');
+    var label = document.getElementById('xp-label');
+    document.querySelectorAll('.mark').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var id = btn.getAttribute('data-mod');
+        if(done.has(id)){ done.delete(id); btn.classList.remove('done'); }
+        else { done.add(id); btn.classList.add('done'); }
+        var pct = (done.size/5)*100;
+        fill.style.width = pct + '%';
+        label.innerHTML = '<b>'+done.size+'</b> / 5 modules cleared';
+      });
+    });
+  })();
+</script>
+</body>
+</html>
