@@ -183,6 +183,10 @@
     border-radius:16px;padding:18px;margin:16px 0;text-align:center}
   .diagram svg{max-width:100%;height:auto}
   .cap{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--mut2);margin-top:8px}
+  .txthta{border:1px solid var(--line);background:var(--bg2);border-radius:16px;padding:16px 18px;margin:16px 0 6px;
+    font-family:var(--mono);font-size:12.5px;line-height:1.75;color:var(--ink);overflow-x:auto;white-space:pre;text-align:left}
+  .txthta b{color:var(--accent);font-weight:700}
+  .txthta .pl{color:var(--mut)}
 
   /* Mendelow matrix */
   .matrix-wrap{display:grid;grid-template-columns:26px 1fr;gap:8px;margin:16px 0}
@@ -340,6 +344,7 @@
           <h3>Physical<span class="sub">physiology · ergonomics</span></h3></div>
         <p>The body's limits: reach, size, strength, speed, stamina. Needs <b>ergonomic</b> design so tasks feel efficient &amp; comfortable.</p>
         <p>3 things specialists analyse — <b>Operations</b> (the motor actions: tap, swipe, type), <b>Dimension</b> (size/shape/weight vs the hand), <b>Context</b> (environment: driving, gloves, sunlight).</p>
+        <p>Accommodate <b>P-T-S disabilities</b>: <b>Permanent</b> (one arm), <b>Temporary</b> (broken wrist), <b>Situational</b> (holding a baby, gesture fatigue from long scrolling).</p>
         <div class="eg"><b>Watch for</b>Movement time depends on a target's <b>size &amp; distance</b> (Fitts's Law): make key buttons big &amp; near the thumb; edges/corners are easy hits.</div>
       </div>
 
@@ -458,6 +463,16 @@
       <div class="cap">HTA = Goal → Tasks → Subtasks, with a Plan saying the order</div>
     </div>
 
+    <div class="txthta"><b>0.</b> Track parcel on Shopee
+   <b>1.</b> Open the Shopee website
+       <b>1.1</b> Enter "shopee.com.my"
+   <b>2.</b> Go to My Purchases
+       <b>2.1</b> Find the username on the home page
+       <b>2.2</b> Click "My Purchase"
+   <b>3.</b> Choose parcel &amp; check delivery status
+<span class="pl">Plan 0: do 1 → 2 → 3 in order  ·  Plan 2: do 2.1 then 2.2</span></div>
+    <div class="cap" style="text-align:center">the same HTA in textual notation — the test can ask for either form, so know both</div>
+
     <div class="subhead">How to conduct an HTA</div>
     <div class="flow">
       <div class="step"><div class="n">01</div><h4>Prep &amp; research</h4><p>Gather user needs, tasks, pain points; observe the system used for real.</p></div>
@@ -550,7 +565,7 @@
 
     <div class="mnemonic"><span class="tag">Pair them up</span><div class="mx">Remember Norman's six in three pairs: <b>Visibility + Feedback</b> (can I see &amp; do I know it worked?) · <b>Constraints + Mapping</b> (what can I do &amp; does it make sense?) · <b>Consistency + Affordances</b> (is it familiar &amp; obvious?).</div></div>
 
-    <div class="apply"><span class="lab">Apply it →</span><p><b>This is the case-study goldmine.</b> For any page, name 2–3 principles and point to the actual element: "The login page uses <b>Feedback</b> (red text on wrong password) and <b>Constraints</b> (Login button disabled until both fields are filled)." Concrete element = full marks; just describing the page = 5/10.</p></div>
+    <div class="apply"><span class="lab">Apply it →</span><p><b>This is the case-study goldmine.</b> For any page, name 2–3 principles and point to the actual element: "The login page uses <b>Feedback</b> (red text on wrong password) and <b>Constraints</b> (Login button disabled until both fields are filled)." Concrete element = full marks; just describing the page = 5/10. Questions also chain: pick the <b>usability goal</b> first (Ch 6), then the 2–3 principles that <em>achieve</em> that goal.</p></div>
   </section>
 
   <!-- =================================================== -->
